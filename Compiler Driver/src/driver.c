@@ -6,7 +6,7 @@
 **/
 
 /** Program Process:
- *  - Program prints "in" to stdout
+ *  - Program prints "In" to stdout
  *  - Program reads in external arguments
  *	- Program calls each subprogram (scanner, parser, VM) in turn
  *  - Each subprogram returns a success/fail flag upon completion
@@ -25,18 +25,15 @@
 			- '-v' (print virtual machine execution trace (VM output) to the screen)
 		- Outputs for each subprogram stored in permanant text files
  *  - Final output stored in text file "output.txt"
- *	- Program prints "out" to stdout
+ *	- Program prints "Out" to stdout
 **/
 
-/** TODOs
+/** TODOs / Bugs
  *  - Resolve file I/O issues
 		- consider converting to temp files to eliminate extra text files
 		- consider removing intermediate file writes and reads
 			- transfer between structs, or combine reduntant structs
-**/
-
-/** NOTES
-*  - Error in separateTokens(char string[])
+    - Error in separateTokens(char string[])
 		- not ignoring garbage code
 			- error doesn't exist in scanner.c, though code is identical??
 		(resolved by printing each string scanned to a temp file)??
@@ -108,7 +105,7 @@ int tok_max = 0;
 struct tokenlist** token;
 struct symtable** symbol;
 struct codegen** code;
-// VM global variables
+// VM global variables (none)
 
 // Enums!!
 enum SYMLIST {nulsym = 1, identsym, numbersym, plussym, minussym, multsym, slashsym, oddsym, eqlsym, neqsym, lessym, leqsym, gtrsym, geqsym, lparentsym, rparentsym, commasym, semicolonsym, periodsym, becomessym, beginsym, endsym, ifsym, thensym, whilesym, dosym, callsym, constsym, intsym, procsym, outsym, insym, elsesym, writesym, readsym, lcommentsym, rcommentsym};
@@ -699,7 +696,7 @@ void VM(){
         }
 
         if(level_count > MAX_LEXI_LEVELS){
-			printf("Lexigraphical Level Overflow!\n");
+			printf("Lexicographical Level Overflow!\n");
 			break;
         }
 
@@ -724,7 +721,7 @@ void insertLexeme(char string[]){
 	int type;
 	int number;
 	type = examineToken(string);
-	//printf("insert string: %s %d\n", string, type);
+    //printf("insert string: %s %d\n", string, type);
 	lexeme[lexindex] = malloc(sizeof(struct lextable));
 
 	if(comm_flag || type == rcommentsym){
@@ -783,17 +780,17 @@ void separateTokens(char string[]){
 	if(j == 0 && ispunct(data[0])){      // first char is punctuation
 		//check for multi punct symbol
 		if((data[0] == '>' && data[1] == '=') || ((data[0] == '<') && (data[1] == '>' || data[1] == '=')) || (data[0] == ':' && data[1] == '=')|| (data[0] == '/' && data[1] == '*') || (data[0] == '*' && data[1] == '/')){
-			strncpy(string1, data, j+2);         // Copy the original token to a temp string
+			strncpy(string1, data, j+2);		// Copy the original token to a temp string
 			memmove(data+0, data+j+2, left);	// Move the rest of the token to a new string
 			strncpy(string2, data, left);
 			string1[j+2] = '\0';           		// nullify everything after the token we want in the original
 
 		}
 		else{   // single punct symbol
-			strncpy(string1, data, j+1);         // Copy the original token to a temp string
+			strncpy(string1, data, j+1);		// Copy the original token to a temp string
 			memmove(data+0, data+j+1, left);	// Move the rest of the token to a new string
 			strncpy(string2, data, left);
-			string1[strlen(string1)-2] = '\0';           		// nullify everything after the token we want in the original
+			string1[strlen(string1)-2] = '\0';	// nullify everything after the token we want in the original
 		}
 	}else{
 		strncpy(string1, data, j);         	// Copy the original token to a temp string
@@ -1024,9 +1021,9 @@ void printTable(FILE* fout){
 	//fprintf(fout, "\n");
 	//printf("\n");
 }
-//////// eof Scanner Funtions ////////
+//////// eof Scanner Functions ////////
 
-//////// Parser Funtions ////////
+//////// Parser Functions ////////
 // block "."
 void program(){
 	int L = 0;  // first L level is zero
@@ -1105,7 +1102,7 @@ void block(int L, int M){
 			tokindex++;
 			//printf("%s \n", token[tokindex]->symname);
 		}
-		// var-declaration ::= [ "int "ident {"," ident} “;"]
+		// var-declaration ::= [ "int "ident {"," ident} ï¿½;"]
 		if(token[tokindex]->token_num == intsym){   // add variable
 			kind = 2;
 			do{
@@ -1719,7 +1716,7 @@ void printSymbols(FILE* fout){
 			break;
 		case 2:     // var  (kind, name, L, M)
 			fprintf(fout, "var   %-11s   %-2d  %-2d\n", symbol[i]->name, symbol[i]->level, symbol[i]->addr);
-			printf("%var   %-11s   %-2d  %-2d\n", symbol[i]->name , symbol[i]->level, symbol[i]->addr);
+			printf("var   %-11s   %-2d  %-2d\n", symbol[i]->name , symbol[i]->level, symbol[i]->addr);
 			break;
 		case 3:     // proc (kind name, L, M)
 			fprintf(fout, "proc    %-11s   %-2d  %-2d\n", symbol[i]->name, symbol[i]->level, symbol[i]->addr);
@@ -2006,8 +2003,8 @@ void error(FILE* fout){
 			puts("Error number 27, 'end' expected\n");
 			break;
 		default:
-			fputs("Unknown error occured\n", fout);
-			puts("Unknown error occured\n");
+			fputs("Unknown error occurred\n", fout);
+			puts("Unknown error occurred\n");
 			break;
 	}
 }
